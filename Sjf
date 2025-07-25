@@ -1,0 +1,43 @@
+processes = [
+    ['P1', 0, 3],
+    ['P2', 1, 2],
+    ['P3', 2, 1],
+    ['P4', 3, 4],
+    ['P5', 0, 2]
+]
+processes.sort(key=lambda x: x[1])
+
+n = len(processes)
+completed = 0
+current_time = 0
+is_completed = [False] * n
+waiting_times = [0] * n
+
+while completed < n:
+    idx = -1
+    min_bt = float('inf')
+    for i in range(n):
+        at = processes[i][1]
+        bt = processes[i][2]
+        if at <= current_time and not is_completed[i]:
+            if bt < min_bt:
+                min_bt = bt
+                idx = i
+
+    if idx == -1:
+        current_time += 1
+    else:
+        current_time += processes[idx][2]
+        ct = current_time
+        tat = ct - processes[idx][1]
+        wt = tat - processes[idx][2]
+        waiting_times[idx] = wt
+        is_completed[idx] = True
+        completed += 1
+
+print("PID\tAT\tBT\tWT")
+for i in range(n):
+    print(f"{processes[i][0]}\t{processes[i][1]}\t{processes[i][2]}\t{waiting_times[i]}")
+
+avg_wt = sum(waiting_times) / n
+print(f"\nAverage Waiting Time: {avg_wt:.2f}")
