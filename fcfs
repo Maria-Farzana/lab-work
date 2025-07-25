@@ -1,0 +1,25 @@
+processes = [
+    ['P1', 0, 3],
+    ['P2', 1, 2],
+    ['P3', 2, 1],
+    ['P4', 3, 4]
+]
+processes.sort(key=lambda x: x[1])
+ct = 0
+results = []
+
+for p in processes:
+    pid, at, bt = p
+    if ct < at:
+        ct = at  
+    ct += bt
+    tat = ct - at
+    wt = tat - bt
+    results.append([pid, at, bt, ct, tat, wt])
+
+print("PID\tAT\tBT\tCT\tTAT\tWT")
+for r in results:
+    print("\t".join(map(str, r)))
+
+avg_wt = sum(r[5] for r in results) / len(processes)
+print(f"\nAverage Waiting Time: {avg_wt:.2f}")
