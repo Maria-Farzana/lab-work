@@ -1,0 +1,51 @@
+processes = [
+    {"pid": "P1", "AT": 0, "BT": 5},
+    {"pid": "P2", "AT": 1, "BT": 3},
+    {"pid": "P3", "AT": 2, "BT": 1},
+    {"pid": "P4", "AT": 3, "BT": 2},
+    {"pid": "P5", "AT": 4, "BT": 3},
+]
+time_quant = 2
+time = 0
+ready_queue = []
+completed = []
+remaining = {p["pid"]: p["BT"] for p in processes}
+CT = {}
+TAT = {}
+WT = {}
+running_queue = set()  
+
+while len(completed) < len(processes):
+    for p in processes:
+        if p["pid"] not in running_queue and p["AT"] <= time:
+            ready_queue.append(p["pid"])
+            running_queue.add(p["pid"])
+    if not ready_queue:
+        time += 1
+        continue
+
+    current = ready_queue.pop(0)
+    run_time = min(time_quant, remaining[current])
+    time += run_time
+    remaining[current] -= run_time
+
+    for p in processes:
+        if p["pid"] not in running_queue and p["AT"] <= time:
+            ready_queue.append(p["pid"])
+            running_queue.add(p["pid"])
+
+    if remaining[current] == 0:
+        CT[current] = time
+        completed.append(current)
+    else:
+        ready_queue.append(current)
+
+for p in processes:
+    pid = p["pid"]
+    TAT[pid] = CT[pid] - p["AT"]
+    WT[pid] = TAT[pid] - p["BT"]
+
+print("PID  AT  BT  CT  TAT  WT")
+for p in processes:
+    pid = p["pid"]
+    print(f"{pid}\t{p['AT']}\t{p['BT']}\t{CT[pid]}\t{TAT[pid]}\t{WT[pid]}")
