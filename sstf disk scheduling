@@ -1,0 +1,19 @@
+requests = [176, 39, 49, 114, 90, 26]
+head = 39
+
+total_movement = 0
+
+seek_sequence = []
+
+while requests:
+    
+    requests.sort(key=lambda x: abs(x - head))
+    closest_request = requests.pop(0)
+    
+    total_movement += abs(head - closest_request)
+    head = closest_request
+    
+    seek_sequence.append(head)
+
+print("Seek Sequence:", seek_sequence)
+print("Total Head Movement:", total_movement)
