@@ -1,0 +1,19 @@
+def fcfs_disk_scheduling(requests, start_head):
+    total_seek_time = 0
+    current_position = start_head
+
+    print("Seek Sequence:", end=" ")
+
+    for req in requests:
+        movement = abs(current_position - req)  
+        total_seek_time += movement
+        current_position = req
+        print(req, end=" ")
+
+    print(f"\nTotal Seek Time = {total_seek_time}")
+
+
+
+req_list = [176, 39, 114, 90, 26]   
+initial_head = 60                   
+fcfs_disk_scheduling(req_list, initial_head)
