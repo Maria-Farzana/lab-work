@@ -1,0 +1,36 @@
+req_seq = [14, 20, 29, 40, 50, 110]
+head = 29
+direction = 'left'
+def scan(req_seq, head, direction):
+    req_seq = sorted(req_seq)
+    seek_seq = []
+    left = [r for r in req_seq if r < head]
+    right = [r for r in req_seq if r >= head]
+
+    if direction == 'left':
+        left = sorted(left, reverse=True)
+        for r in left:
+            seek_seq.append(r)
+        
+        for r in right:
+            seek_seq.append(r)
+    else:
+        for r in right:
+            seek_seq.append(r)
+        seek_seq.append(199) 
+        left = sorted(left)
+        for r in left:
+            seek_seq.append(r)
+
+    return seek_seq
+
+
+result = scan(req_seq, head, direction)
+print("Seek sequence:", result)
+
+
+total_seek = abs(head - result[0]) 
+for i in range(1, len(result)):
+    total_seek += abs(result[i] - result[i-1])
+
+print("Total seek time:", total_seek)
