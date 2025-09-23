@@ -1,0 +1,39 @@
+process=[
+{"p1",0,6},
+{"p2",1,8},
+{"p3",2,7},
+{"p4",3,3} 
+]
+time=0
+completed=[]
+
+while process:
+ ready_queue=[p for p in process if p["at"]<=time]
+ if not ready_queue:
+        time+=1
+        continue
+ 
+ process=min(ready_queue,key=lambda x:x["bt"])
+ time+=process["bt"]
+ ct=time
+ tat=ct-process["at"]
+ wt=tat-process["bt"]
+completed.append({
+     "pid":process["pid"], 
+     "at":process["at"],
+      "bt":process["bt"],
+      "ct":ct,
+      "tat":tat,
+      "wt":wt,
+      
+       })
+ 
+process.remove(process)
+print("PID AT BT CT TAT WT")
+for p in completed:
+    print(p["pid"], p["AT"], p["BT"], p["CT"], p["TAT"], p["WT"])
+
+avg_tat = sum(p["TAT"] for p in completed)/len(completed)
+avg_wt = sum(p["WT"] for p in completed)/len(completed)
+print(f"\nAverage TAT = {avg_tat:.2f}")
+print(f"Average WT = {avg_wt:.2f}")
