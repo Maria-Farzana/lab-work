@@ -1,0 +1,22 @@
+def fifo_page_replacement(page_list, max_frames):
+    memory_frames = []
+    faults = 0
+
+    for page in page_list:
+        if page not in memory_frames:
+            if len(memory_frames) < max_frames:
+                memory_frames.append(page)
+            else:
+                memory_frames.pop(0)
+                memory_frames.append(page)
+            faults += 1
+        print(f"Current memory frames: {memory_frames}")
+
+    return faults
+
+
+page_references = [3, 2, 0, 1, 0, 5, 9, 7, 2]
+frame_capacity = 3
+
+total_faults = fifo_page_replacement(page_references, frame_capacity)
+print(f"Total Page Faults: {total_faults}")
